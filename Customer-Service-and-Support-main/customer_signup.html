@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Create Account - Support System</title>
+  <link rel="stylesheet" href="style/login.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <div class="auth-container">
+    <h2>Create Account</h2>
+    <form onsubmit="handleSignup(event)">
+      <input type="text" placeholder="Full Name" required />
+      <input type="email" placeholder="Email" required />
+      <input type="tel" placeholder="Phone Number" required />
+      <input type="password" placeholder="Password" required />
+      <button type="submit">Sign Up</button>
+      <p>Already have an account? <a href="customer_login.html">Login</a></p>
+    </form>
+  </div>
+
+  <script>
+    const SUPABASE_URL = 'https://iradphcrwwokdrnhxpnd.supabase.co'
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlyYWRwaGNyd3dva2Rybmh4cG5kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY3MTI5ODEsImV4cCI6MjA2MjI4ODk4MX0.X1okOgCMPHNh_vufxDnSlENTO99tMDjkSOXMeWawNrU'
+
+    const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+
+
+
+    async function handleSignup(event) {
+      event.preventDefault();
+
+      const name = document.querySelector('input[type="text"]').value;
+      const email = document.querySelector('input[type="email"]').value;
+      const phone = document.querySelector('input[type="tel"]').value;
+      const password = document.querySelector('input[type="password"]').value;
+
+      const { data, error } = await db
+        .from('customers')
+        .insert([{ name, email, phone, password }]);
+
+      if (error) {
+        alert("Signup failed: " + error.message);
+      } else {
+        alert("Sign up successful!");
+        sessionStorage.setItem("customerName", data.name);
+        sessionStorage.setItem("customerEmail", data.email);
+        sessionStorage.setItem("customerPhone", data.phone);
+        window.location.href = "customer_login.html";
+      }
+    }
+
+    
+  </script>
+</body>
+</html>

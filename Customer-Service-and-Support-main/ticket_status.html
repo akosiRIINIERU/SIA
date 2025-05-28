@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ticket Status</title>
+  <link rel="stylesheet" href="style/ticket_status.css" />
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <div class="navbar-left">
+        <div class="navbar-title">Customer Service & Support</div>
+        <div class="navbar-links">
+          <a href="customer_homepage.html">Dashboard</a>
+          <a href="customer.html">Submit Ticket</a>
+          <a href="feedback.html">Feedback</a>
+          <a href="ticket_status.html">Ticket Status</a>
+        </div>
+      </div>
+      <div class="navbar-right">
+        <a href="#">👤 Profile</a>
+        <a href="#">🔔 Notifications</a>
+      </div>
+    </div>
+  </nav>
+
+ <div class="container">
+
+    <!-- Main Section -->
+    <div class="main">
+      <!-- Form Area -->
+      <div class="form-box">
+        <form>
+          <h2>Check Ticket Status</h2>
+          <label for="name">Name</label>
+          <input type="text" id="name" placeholder="Your Name">
+
+          <label for="email">Email</label>
+          <input type="email" id="email" placeholder="you@example.com">
+
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+
+      <!-- Ticket Status Info -->
+      <div class="status-box">
+        <h3>Ticket Status</h3>
+        <p><strong>Status:</strong> In Progress</p>
+        <p><strong>Last Updated:</strong> May 25, 2025</p>
+        <p><strong>Assigned Agent:</strong> John Doe</p>
+      </div>
+    </div>
+  </div>
+
+    <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-info">
+        <h2>Contact Us</h2>
+        <p>Email: <a href="mailto:maghanoylookingforbb@gmail.com">maghanoylookingforbb@gmail.com</a></p>
+        <p>Phone: <a href="tel:+123456789">09999999999</a></p>
+        <p>Location: Cagayan de Oro City</p>
+      </div>
+    </div>
+    <p class="footer-credit">© 2025 maghanoylookingforbb. All Rights Reserved.</p>
+  </footer>
+
+<!-- Chat Toggle Button -->
+<div id="chat-toggle" class="chat-toggle">
+  💬
+</div>
+
+<!-- Chatbox -->
+<div id="chatbox" class="chatbox hidden">
+  <div class="chatbox-header">
+    <div>
+      <div class="ticket-id">Ticket #12345</div>
+      <div class="agent-name">Assigned to: John Doe</div>
+    </div>
+    <button id="close-chat" class="close-btn">−</button>
+  </div>
+
+  <div class="chatbox-messages" id="chat-messages">
+    <div class="message agent">👨‍💼 Hello! How can I assist you with this ticket?</div>
+    <div class="message user">I need help with my ticket</div>
+    <div class="message agent">We'll get back to you shortly.</div>
+  </div>
+
+  <div class="chatbox-input">
+    <input type="text" id="chat-input" placeholder="Type your message..." />
+    <button onclick="sendMessage()">➤</button>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const toggle = document.getElementById("chat-toggle");
+    const chatbox = document.getElementById("chatbox");
+    const close = document.getElementById("close-chat");
+
+    toggle.addEventListener("click", () => {
+      chatbox.classList.toggle("hidden");
+    });
+
+    close.addEventListener("click", () => {
+      chatbox.classList.add("hidden");
+    });
+  });
+
+  function sendMessage() {
+    const input = document.getElementById("chat-input");
+    const msg = input.value.trim();
+    const chat = document.getElementById("chat-messages");
+
+    if (msg !== "") {
+      const div = document.createElement("div");
+      div.className = "message user";
+      div.textContent = msg;
+      chat.appendChild(div);
+      input.value = "";
+      chat.scrollTop = chat.scrollHeight;
+    }
+  }
+</script>
+
+</body>
+</html>

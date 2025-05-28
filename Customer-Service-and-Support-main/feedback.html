@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Customer Feedback</title>
+  <link rel="stylesheet" href="style/feedback.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    .loading {
+      display: none;
+      text-align: center;
+      margin: 20px 0;
+    }
+    .spinner {
+      border: 4px solid rgba(0, 0, 0, 0.1);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border-left-color: #09f;
+      animation: spin 1s linear infinite;
+      margin: 0 auto;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .error-message {
+      color: #dc3545;
+      padding: 10px;
+      background: #f8d7da;
+      border-radius: 4px;
+      margin: 10px 0;
+    }
+    .customer-info {
+      background: #f8f9fa;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <div class="navbar-left">
+        <div class="navbar-title">Customer Service & Support</div>
+        <div class="navbar-links">
+          <a href="customer_homepage.html">Dashboard</a>
+          <a href="customer.html">Submit Ticket</a>
+          <a href="feedback.html">Feedback</a>
+        </div>
+      </div>
+      <div class="navbar-right">
+        <a href="#">👤 Profile</a>
+        <a href="#">🔔 Notifications</a>
+        <a href="#" onclick="handleLogout()" class="logout-btn">🚪 Logout</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <h1>Customer Feedback</h1>
+
+    <section class="feedback-form">
+      <h2>Share Your Thoughts</h2>
+      <form id="feedbackForm">
+        <div class="customer-info" id="customerInfo">
+          <!-- Customer details will load here -->
+          <p>Loading your information...</p>
+        </div>
+
+        <div class="form-group checkbox-group">
+          <input type="checkbox" id="anonymous" />
+          <label for="anonymous">Submit anonymously (hide your name)</label>
+        </div>
+
+        <div class="form-group">
+          <label for="comment">Your Feedback</label>
+          <textarea id="comment" placeholder="Write your feedback..." required></textarea>
+        </div>
+
+        <div class="form-group rating-group">
+          <label for="rating">Rate Our Service (1-5 stars)</label>
+          <div class="rating-stars">
+            <input type="radio" id="star5" name="rating" value="5" required />
+            <label for="star5" title="5 stars">★</label>
+            <input type="radio" id="star4" name="rating" value="4" />
+            <label for="star4" title="4 stars">★</label>
+            <input type="radio" id="star3" name="rating" value="3" />
+            <label for="star3" title="3 stars">★</label>
+            <input type="radio" id="star2" name="rating" value="2" />
+            <label for="star2" title="2 stars">★</label>
+            <input type="radio" id="star1" name="rating" value="1" />
+            <label for="star1" title="1 star">★</label>
+          </div>
+        </div>
+
+        <button type="submit">Submit Feedback</button>
+        <div id="formMessage" style="margin-top: 15px;"></div>
+      </form>
+    </section>
+
+    <div class="loading" id="loadingFeedback">
+      <div class="spinner"></div>
+      <p>Loading feedback...</p>
+    </div>
+
+    <section class="feedback-display">
+      <h2>Recent Feedback</h2>
+      <div class="feedback-list" id="feedbackList">
+        <!-- Feedback items will be loaded here -->
+      </div>
+    </section>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-info">
+        <h2>Contact Us</h2>
+        <p>Email: <a href="mailto:maghanoylookingforbb@gmail.com">maghanoylookingforbb@gmail.com</a></p>
+        <p>Phone: <a href="tel:+123456789">09999999999</a></p>
+        <p>Location: Cagayan de Oro City</p>
+      </div>
+    </div>
+    <p class="footer-credit">© 2025 maghanoylookingforbb. All Rights Reserved.</p>
+  </footer>
+
+  <script>
+    // Supabase Configuration - REPLACE WITH YOUR NEW CREDENTIALS
+    const SUPABASE_URL = 'https://iradphcrwwokdrnhxpnd.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlyYWRwaGNyd3dva2Rybmh4cG5kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY3MTI5ODEsImV4cCI6MjA2MjI4ODk4MX0.X1okOgCMPHNh_vufxDnSlENTO99tMDjkSOXMeWawNrU';
+    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // Get current customer ID (in a real app, this would come from authentication)
+    let currentCustomerId = null; 
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      // First, load customer data
+      await loadCustomerData();
+      
+      // Then load existing feedback
+      loadFeedback();
+      
+      // Setup form submission
+      document.getElementById('feedbackForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        await submitFeedback();
+      });
+    });
+
+    async function loadCustomerData() {
+      try {
+        // In a real app, you would get the customer ID from authentication
+        // For demo, we'll use customer_id=1
+        currentCustomerId = 1;
+        
+        const { data: customer, error } = await supabase
+          .from('customers')
+          .select('*')
+          .eq('customer_id', currentCustomerId)
+          .single();
+        
+        if (error) throw error;
+        
+        document.getElementById('customerInfo').innerHTML = `
+          <p><strong>Customer:</strong> ${customer.name}</p>
+          <p><strong>Email:</strong> ${customer.email}</p>
+          <p><strong>Phone:</strong> ${customer.phone}</p>
+        `;
+      } catch (error) {
+        console.error('Error loading customer:', error);
+        document.getElementById('customerInfo').innerHTML = `
+          <p class="error-message">Could not load customer data</p>
+        `;
+      }
+    }
+
+    async function submitFeedback() {
+      const isAnonymous = document.getElementById('anonymous').checked;
+      const comment = document.getElementById('comment').value;
+      const rating = document.querySelector('input[name="rating"]:checked').value;
+      
+      try {
+        const { error } = await supabase
+          .from('customers')
+          .update({
+            cast_score: parseInt(rating),
+            npa_score: null, // Not collected in form
+            comments: comment,
+            submitted_at: new Date().toISOString()
+          })
+          .eq('customer_id', currentCustomerId);
+        
+        if (error) throw error;
+        
+        document.getElementById('formMessage').textContent = 'Thank you for your feedback!';
+        document.getElementById('formMessage').style.color = 'green';
+        document.getElementById('feedbackForm').reset();
+        loadFeedback();
+      } catch (error) {
+        console.error('Error submitting feedback:', error);
+        document.getElementById('formMessage').textContent = 'Error submitting feedback. Please try again.';
+        document.getElementById('formMessage').style.color = 'red';
+      }
+    }
+
+    async function loadFeedback() {
+      const feedbackList = document.getElementById('feedbackList');
+      const loadingElement = document.getElementById('loadingFeedback');
+      
+      feedbackList.innerHTML = '';
+      loadingElement.style.display = 'block';
+      
+      try {
+        const { data: feedback, error } = await supabase
+          .from('customers')
+          .select('name, cast_score, comments, submitted_at')
+          .not('comments', 'is', null)
+          .order('submitted_at', { ascending: false })
+          .limit(20);
+        
+        if (error) throw error;
+        
+        if (feedback.length === 0) {
+          feedbackList.innerHTML = '<p>No feedback yet. Be the first to share!</p>';
+        } else {
+          feedback.forEach(item => {
+            const feedbackItem = document.createElement('div');
+            feedbackItem.className = 'feedback-item';
+            feedbackItem.innerHTML = `
+              <strong>${item.name || 'Anonymous'}</strong>
+              <div class="feedback-rating">${'★'.repeat(item.cast_score)}</div>
+              <p>${item.comments}</p>
+              <small>${new Date(item.submitted_at).toLocaleDateString()}</small>
+            `;
+            feedbackList.appendChild(feedbackItem);
+          });
+        }
+      } catch (error) {
+        console.error('Error loading feedback:', error);
+        feedbackList.innerHTML = '<p class="error-message">Error loading feedback.</p>';
+      } finally {
+        loadingElement.style.display = 'none';
+      }
+    }
+
+    function handleLogout() {
+      sessionStorage.clear();
+      alert("You have been logged out.");
+      window.location.href = "customer_login.html";
+    }
+  </script>
+</body>
+</html>

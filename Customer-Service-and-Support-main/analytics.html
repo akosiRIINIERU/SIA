@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Customer Support Analytics</title>
+  <link rel="stylesheet" href="style/analytics.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="navbar-inner">
+          <div class="navbar-left">
+            <div class="navbar-title">Customer Service and Support</div>
+            <div class="navbar-links">
+              <a href="index.html" aria-label="Tickets">Home</a>
+              <a href="dashboard.html" aria-label="Dashboard">Dashboard</a>
+              <a href="analytics.html" aria-label="Analytics">Analytics</a>
+            </div>
+          </div>
+          <div class="navbar-right">
+            <a href="#" aria-label="User Profile">👤Profile </a>
+            <a href="#" aria-label="Notifications">🔔 Notifications</a>
+          </div>
+        </div>
+      </nav>
+
+  <div class="ca-dashboard">
+    <h1 class="ca-title">Customer Support Analytics</h1>
+
+    <div class="ca-kpi-section">
+      <div class="ca-kpi-card">
+        <h3 class="ca-kpi-title">Avg. Resolution Time</h3>
+        <p class="ca-kpi-value">3.4 hrs</p>
+      </div>
+      <div class="ca-kpi-card">
+        <h3 class="ca-kpi-title">First Response Time</h3>
+        <p class="ca-kpi-value">1.2 hrs</p>
+      </div>
+      <div class="ca-kpi-card">
+        <h3 class="ca-kpi-title">Customer Satisfaction</h3>
+        <p class="ca-kpi-value">89%</p>
+      </div>
+      <div class="ca-kpi-card">
+        <h3 class="ca-kpi-title">Tickets Closed</h3>
+        <p class="ca-kpi-value">128 this week</p>
+      </div>
+    </div>
+
+
+    <div class="ca-charts-section">
+    <div class="ca-chart-box">
+      <h3 class="ca-chart-title">Ticket Volume by Category</h3>
+      <div class="fake-bar-chart">
+        <div class="bar" style="height: 70%">Login</div>
+        <div class="bar" style="height: 50%">Return</div>
+        <div class="bar" style="height: 35%">Warranty</div>
+        <div class="bar" style="height: 20%">Shipping</div>
+      </div>
+    </div>
+
+    <div class="ca-chart-box">
+      <h3 class="ca-chart-title">Satisfaction Trend</h3>
+      <div class="fake-line-chart">
+        <div class="dot" style="left: 0%; bottom: 80%"></div>
+        <div class="dot" style="left: 20%; bottom: 85%"></div>
+        <div class="dot" style="left: 40%; bottom: 82%"></div>
+        <div class="dot" style="left: 60%; bottom: 90%"></div>
+        <div class="dot" style="left: 80%; bottom: 89%"></div>
+        <div class="dot" style="left: 100%; bottom: 91%"></div>
+        <svg class="line-path" viewBox="0 0 100 100" preserveAspectRatio="none">
+          <polyline points="0,20 20,15 40,18 60,10 80,11 100,9" fill="none" stroke="#22c55e" stroke-width="2"/>
+        </svg>
+      </div>
+    </div>
+
+    </div>
+
+
+    <div class="ca-table-section">
+      <h3 class="ca-table-title">Top Support Issues</h3>
+      <table class="ca-table">
+        <thead>
+          <tr>
+            <th>Issue</th>
+            <th>Frequency</th>
+            <th>Avg. Resolution Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Login Problems</td>
+            <td>42</td>
+            <td>1.1 hrs</td>
+          </tr>
+          <tr>
+            <td>Return Requests</td>
+            <td>36</td>
+            <td>2.9 hrs</td>
+          </tr>
+          <tr>
+            <td>Warranty Claims</td>
+            <td>21</td>
+            <td>4.5 hrs</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <footer class="footer">
+    <div class="footer-container">
+        <div class="footer-info">
+            <h2>Contact Us</h2>
+            <p>Email: <a href="maghanoylookingforbb@gmail.com">maghanoylookingforbb@gmail.com</a></p>
+            <p>Phone: <a href="tel:+123456789">09999999999</a></p>
+            <p>Location: Cagayan de Oro City</p>
+        </div>
+    </div>
+    <p class="footer-credit">© 2025 maghanoylookingforbb. All Rights Reserved.</p>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="analytics.js"></script>
+
+</body>
+</html>

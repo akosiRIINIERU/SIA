@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Customer</title>
+  <link rel="stylesheet" href="style/customer.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <div class="navbar-left">
+        <div class="navbar-title">Customer Service & Support</div>
+        <div class="navbar-links">
+          <a href="customer_homepage.html">Dashboard</a>
+          <a href="customer.html">Submit Ticket</a>
+          <a href="feedback.html">Feedback</a>
+        </div>
+      </div>
+      <div class="navbar-right">
+        <a href="#">👤 Profile</a>
+        <a href="#">🔔 Notifications</a>
+        <a href="#" onclick="handleLogout()" class="logout-btn">🚪 Logout</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="ticket-container">
+    <h1>Place Your Ticket</h1>
+    <p>Fill out the form below to send your request.</p>
+
+    <form id="ticket-form">
+      <label for="name">Full Name</label>
+      <input type="text" id="name" name="name" readonly />
+
+      <label for="email">Email Address</label>
+      <input type="email" id="email" name="email" readonly />
+
+      <label for="phone">Phone Number</label>
+      <input type="tel" id="phone" name="phone" readonly />
+
+      <label for="issue">Issue</label>
+      <select id="issue" name="issue" required>
+        <option value="" disabled selected>Select an issue</option>
+        <option value="Missing item">Missing Item</option>
+        <option value="Damaged item">Damaged Item</option>
+        <option value="Late delivery">Late Delivery</option>
+        <option value="Warranty claim">Warranty Claim</option>
+        <option value="Return request">Return Request</option>
+        <option value="Technical support">Technical Support</option>
+        <option value="Other">Other</option>
+      </select>
+
+      <label for="order_details">Description</label>
+      <textarea id="order_details" name="order_details" rows="5" required></textarea>
+
+      <button type="submit">Submit ticket</button>
+    </form>
+
+    <a href="index.html" class="back-btn">Back to Home</a>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-info">
+        <h2>Contact Us</h2>
+        <p>Email: <a href="mailto:maghanoylookingforbb@gmail.com">maghanoylookingforbb@gmail.com</a></p>
+        <p>Phone: <a href="tel:+123456789">09999999999</a></p>
+        <p>Location: Cagayan de Oro City</p>
+      </div>
+    </div>
+    <p class="footer-credit">© 2025 maghanoylookingforbb. All Rights Reserved.</p>
+  </footer>
+<script src="customer.js"></script>
+
+</body>
+</html>

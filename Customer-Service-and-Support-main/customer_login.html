@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login - Support System</title>
+  <link rel="stylesheet" href="style/login.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <div class="auth-container">
+    <h2>Customer Login</h2>
+    <form onsubmit="handleLogin(event)">
+      <input type="email" placeholder="Email" required />
+      <input type="password" placeholder="Password" required />
+      <button type="submit">Login</button>
+      <p>Don't have an account? <a href="customer_signup.html">Sign up</a></p>
+    </form>
+    
+    <!-- Back to Home Button -->
+    <div style="margin-top: 20px; text-align: center;">
+      <a href="index.html" style="color: #007BFF; text-decoration: none;">← Go Back</a>
+    </div>
+  </div>
+
+  <script>
+    const SUPABASE_URL = 'https://iradphcrwwokdrnhxpnd.supabase.co'
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlyYWRwaGNyd3dva2Rybmh4cG5kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY3MTI5ODEsImV4cCI6MjA2MjI4ODk4MX0.X1okOgCMPHNh_vufxDnSlENTO99tMDjkSOXMeWawNrU'
+
+    const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+
+    
+    async function handleLogin(event) {
+      event.preventDefault(); 
+
+      const email = document.querySelector('input[type="email"]').value;
+      const password = document.querySelector('input[type="password"]').value;
+
+      const { data, error } = await db
+        .from('customers')
+        .select('*')
+        .eq('email', email)
+        .eq('password', password)
+        .single();
+
+      if (error || !data) {
+        alert("Login failed: Incorrect email or password.");
+      } else {
+        alert("Login successful!");
+        sessionStorage.setItem('customerId', data.customer_id);
+        sessionStorage.setItem("customerName", data.name);
+        sessionStorage.setItem("customerEmail", data.email);
+        sessionStorage.setItem("customerPhone", data.phone);
+        window.location.href = "customer_homepage.html";
+      }
+    }
+
+    
+    
+  </script>
+</body>
+</html>
